@@ -36,7 +36,7 @@ if (trim($_POST['password']) != trim($_POST['confirm'])) {
 	$okay = FALSE;
 } 
 
-// validate birth year
+/* // validate birth year
 if(is_numeric($_POST['year'])) {
 	$age = 2011 - $_POST['year']; //calculate age this year
 	} else {
@@ -48,12 +48,45 @@ if(is_numeric($_POST['year'])) {
 if($_POST['year'] >= 2011) {
 	print '<p class="error">Either you entered your birth year wrong or you come from the future.</p>';
 	$okay = FALSE;
+} */
+
+//more efficient year validation in nested conditional
+if (is_numeric($_POST['year']) && (strlen($_POST['year']) == 4)) {
+	if ($_POST['year'] < 2011){
+		$age = 2011 - $_POST['year'];
+	} else {
+		print '<p class="error">Either you entered your birth year wrong or you come from the future!</p>';
+		$okay = FALSE;
+	} // end of second conditional
+	} else { //for first conditional
+		print '<p class="error">Please enter the year you were born as four digits.</p>';
+		$okay = FALSE;
+} // end of first conditional
+
+// Validate the terms
+if (!isset($_POST['terms'])) {
+	print '<p class="error">You must accept the terms.</p>';
+	$okay = FALSE;
 }
 
+if($_POST['color'] == 'red') {
+	$color_type = 'primary';
+	} elseif ($_POST['color'] == 'green') {
+	$color_type = 'secondary';
+	} elseif ($_POST['color'] == 'blue') {
+	$color_type = 'primary';
+	} elseif ($_POST['color'] == 'yellow') {
+	$color_type = 'primary';
+	} 
+	else { //problem
+		print '<p class="error">Please select your favorite color.</p>';
+		$okay = FALSE;
+	}
 //if there are no errors, print success message and current age
 if($okay) {
 	print '<p>You have been successfully registered (but not really).</p>';
 	print "<p>You will turn $age this year.</p>";
+	print "<p>Your favorite color is a $color_type color.</p>";
 }
 ?>
 </body>
